@@ -1,0 +1,12 @@
+NAME : d6
+COMMENT : Drilling problem (Reinelt)
+TYPE : TSP
+DIMENSION : 5
+EDGE_WEIGHT_TYPE : EUC_2D
+NODE_COORD_SECTION
+1 1 1
+2 4 4
+3 1 4
+4 3 1
+5 4 2
+EOF

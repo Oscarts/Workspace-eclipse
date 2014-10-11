@@ -1,0 +1,11 @@
+./instances/d198.tsp;26916;60073;0
+./instances/eil101.tsp;739;59928;0
+./instances/eil51.tsp;497;59946;0
+./instances/kroA100.tsp;25306;60123;0
+./instances/kroA150.tsp;31283;60196;0
+./instances/kroA200.tsp;36405;60277;0
+./instances/lin318.tsp;60890;60012;0
+./instances/small.tsp;11;59937;0
+./instances/pcb442.tsp;71899;60995;0
+./instances/d657.tsp;78489;72569;2
+./instances/rat575.tsp;9646;61612;2

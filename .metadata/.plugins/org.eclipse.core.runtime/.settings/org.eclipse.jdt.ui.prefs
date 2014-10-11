@@ -1,0 +1,21 @@
+breadcrumb.org.eclipse.jdt.ui.JavaPerspective=true
+command=/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/bin/javadoc
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="Solution"><rhs name\="Solution"/></lhs><lhs name\="Pruebas"><rhs name\="Pruebas"/></lhs><lhs name\="Solver"><rhs name\="Solver"/></lhs><lhs name\="java.lang.Number"><rhs name\="java.lang.Long"/></lhs><lhs name\="HRandomInsertion"><rhs name\="HRandomInsertion"/></lhs><lhs name\="Instance"><rhs name\="Instance"/></lhs><lhs name\="ClarkeWrite"><rhs name\="ClarkeWrite"/></lhs><lhs name\="java.util.List"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.util.RandomAccess"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.lang.Cloneable"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.util.Collection"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.lang.Iterable"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.util.AbstractList"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.util.AbstractCollection"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="java.util.ArrayList"><rhs name\="java.util.ArrayList"/></lhs><lhs name\="ClarkeWright"><rhs name\="ClarkeWright"/></lhs><lhs name\="Saving"><rhs name\="Saving"/></lhs><lhs name\="Density"><rhs name\="Density"/></lhs><lhs name\="LinearRelaxation"><rhs name\="LinearRelaxation"/></lhs><lhs name\="BranchAndBount"><rhs name\="BranchAndBount"/></lhs><lhs name\="ColoringGraphAlgorithm"><rhs name\="ColoringGraphAlgorithm"/></lhs><lhs name\="Nodes"><rhs name\="Nodes"/></lhs><lhs name\="Neighborhood"><rhs name\="NTwoOpt"/><rhs name\="NSwap"/><rhs name\="NOrOpt"/></lhs><lhs name\="localSearch"><rhs name\="localSearch"/></lhs><lhs name\="VariableNeighborhoodSolution"><rhs name\="VariableNeighborhoodSolution"/></lhs><lhs name\="NSwap"><rhs name\="NSwap"/></lhs><lhs name\="HInsertion"><rhs name\="HCheapestInsertion"/><rhs name\="HRandomInsertion"/></lhs><lhs name\="HCheapestInsertion"><rhs name\="HCheapestInsertion"/></lhs><lhs name\="GRASP"><rhs name\="GRASP"/></lhs><lhs name\="SortSolutions"><rhs name\="SortSolutions"/></lhs></history>
+content_assist_number_of_computers=13
+content_assist_proposals_background=255,255,255
+content_assist_proposals_foreground=0,0,0
+eclipse.preferences.version=1
+fontPropagated=true
+org.eclipse.jdt.ui.editor.tab.width=
+org.eclipse.jdt.ui.formatterprofiles.version=12
+org.eclipse.jdt.ui.javadoclocations.migrated=true
+org.eclipse.jdt.ui.text.code_templates_migrated=true
+org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+org.eclipse.jdt.ui.text.templates_migrated=true
+org.eclipse.jface.textfont=1|Monaco|11.0|0|COCOA|1|;
+proposalOrderMigrated=true
+spelling_locale_initialized=true
+tabWidthPropagated=true
+useAnnotationsPrefPage=true
+useQuickDiffPrefPage=true

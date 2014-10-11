@@ -1,0 +1,29 @@
+package planner;
+
+public class TSP_GA {
+
+    public static void main(String[] args) throws Exception {
+
+        // Create and add our cities
+//        City cityN = new City(0, 0);
+//        TourManager.addCity(cityN);
+    	
+        readData data=new readData(args[0]);
+        //int dim=data.getNumberCities();
+        // Initialize population
+        Population pop = new Population(4, true, data.getMatrix());
+        System.out.println("Initial distance: " + pop.getFittest().getDistance());
+
+        // Evolve population for 100 generations
+        pop = GA.evolvePopulation(pop, dim);
+        for (int i = 0; i < 5; i++) {
+            pop = GA.evolvePopulation(pop);
+        }
+
+        // Print final results
+        System.out.println("Finished");
+        System.out.println("Final distance: " + pop.getFittest().getDistance());
+        System.out.println("Solution:");
+        System.out.println(pop.getFittest());
+    }
+}

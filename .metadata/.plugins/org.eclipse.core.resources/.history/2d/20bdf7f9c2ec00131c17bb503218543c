@@ -1,0 +1,609 @@
+import java.lang.reflect.Array;
+import java.util.*;
+
+/**
+ * 
+ * This class is the place where you should enter your code and from which you
+ * can create your own objects. <br>
+ * <br>
+ * The method you must implement is <code>solve()</code>. This method is called
+ * by the programmer after loading the data. <br>
+ * <br>
+ * The <code>TSPSolver</code> object is created by the <code>Main</code> class. <br>
+ * The other objects that are created in <code>Main </code> can be accessed
+ * through the following <code>TSPSolver</code> attributes: <li>
+ * <code>m_instance</code> the <code>Instance</code> object which contains the
+ * problem data. <li><code>m_solution</code> the <code>Solution</code> object to
+ * modify. This object will store the result of the program. <li>
+ * <code>m_time</code> the maximum time limit (in seconds) given to the program.
+ * <br>
+ * <br>
+ * 
+ * @author Damien Prot, Fabien Lehuédé 2012
+ * 
+ */
+public class TSPSolver {
+
+	// --------------------------------------------
+	// --------------- ATTRIBUTES ------------------
+	// --------------------------------------------
+
+	/**
+	 * The traveling salesman problem solution that will be returned by the
+	 * program
+	 */
+	private Solution m_solution;
+
+	/** The TSP data. */
+	private Instance m_instance;
+
+	/** Time given to solve the problem. */
+	private long m_time;
+
+	// --------------------------------------------
+	// ------------ GETTERS AND SETTERS -----------
+	// --------------------------------------------
+
+	// These methods allow to access the class attributes from outside the
+	// class.
+
+	/** @return the problem solution */
+	public Solution getSolution() {
+		return m_solution;
+	}
+
+	/** @return problem data */
+	public Instance getInstance() {
+		return m_instance;
+	}
+
+	/** @return Time given to solve the problem */
+	public long getTime() {
+		return m_time;
+	}
+
+	/**
+	 * Initializes the problem solution with a new Solution object (the old one
+	 * will be deleted).
+	 * 
+	 * @param sol
+	 *            : new solution
+	 */
+	public void setSolution(Solution sol) {
+		this.m_solution = sol;
+	}
+
+	/**
+	 * Sets the problem data
+	 * 
+	 * @param inst
+	 *            : the Instance object which contains the data.
+	 */
+	public void setInstance(Instance inst) {
+		this.m_instance = inst;
+	}
+
+	/**
+	 * Sets the time limit (in seconds).
+	 * 
+	 * @param time
+	 *            : time given to solve the problem
+	 */
+	public void setTime(long time) {
+		this.m_time = time;
+	}
+
+	// --------------------------------------
+	// -------------- METHODS ---------------
+	// --------------------------------------
+
+	/**
+	 * TODO Modify this method to solve the problem.
+	 * 
+	 * <br>
+	 * Do not print text on the standard output (eg. using
+	 * <code>System.out.print()</code> or <code>System.out.println()</code>.
+	 * This output is dedicated to the result analyzer that will be used to
+	 * evaluate your code on multiple instances.
+	 * 
+	 * <br>
+	 * You can print using the error output (
+	 * <code>System.err.print/println</code>).
+	 * 
+	 * <br>
+	 * When your algorithm terminates, make sure the attribute
+	 * <code>m_solution</code> in this class points to the solution you want to
+	 * return.
+	 * 
+	 * <br>
+	 * You have to make sure that your algorithm does not take more time than
+	 * the time limit <code>m_time</code>.
+	 * 
+	 * @throws Exception
+	 *             May return some error, in particular if some vertices index
+	 *             are wrong.
+	 */
+	public void solve() throws Exception {
+
+		/*
+		 * // Solution nnSol=nearestNeighboor(0); // m_solution=nnSol; //
+		 * nnSol.print(System.err);
+		 * 
+		 * // HRandomInsertion rih=new HRandomInsertion(m_instance); //
+		 * rih.solve(); // Solution rihSol=rih.getSolution(); //
+		 * System.err.println("Random insertion solution"); //
+		 * m_solution=rihSol; // rihSol.print(System.err);
+		 */ 
+//		  HCheapestInsertion cih=new HCheapestInsertion(m_instance); //
+//		  cih.solve();
+//		  m_solution=cih.getSolution();
+//		  m_solution.print(System.out);
+		  
+		  //		  boolean[] selectedNodes= new boolean[m_instance.getNbVertices()];
+//		  int[] list=new int[2];
+//		  list=cih.Cheapest(selectedNodes, 2);
+//		  
+//		  for (int i = 0; i < list.length; i++) {
+//			System.out.println(list[i]);
+//		  }
+		
+		
+//		long startT = System.currentTimeMillis(); // record start time (in ms).
+//		long timeSpent = 0;
+//		while (timeSpent <= ((m_time * 1000) - 100)){
+//				timeSpent = System.currentTimeMillis() - startT;
+//		
+//		
+//		
+//		}
+		 GRASP Grasp=new GRASP(m_instance, 5,10,m_time);
+		 m_solution=Grasp.solve();
+		
+		  //Solution cihSol=cih.getSolution(); //
+		  //System.err.println("Random insertion solution"); //
+		  //m_solution=cihSol; // cihSol.print(System.err);
+		  
+		 /* 
+		 * // ClarkeWright CW=new ClarkeWright(m_instance); // // Solution
+		 * initialSolution=CW.getSolution();
+		 * 
+		 * // Solution initialSolution=stupidSolution(); //
+		 * m_instance=initialSolution.getInstance(); //
+		 * initialSolution.print(System.err); // //
+		 * System.err.println("clarke & wright: " +
+		 * initialSolution.getObjective()); // 
+		  *VariableNeighborhoodSolution VNS=new VariableNeighborhoodSolution(m_instance,initialSolution); 
+		 * m_solution=VNS.solveVNS(); // // Solution
+		 * improvedSolution1=localSearch(stupidSolution(),1); //
+		 * improvedSolution1.print(System.err); // m_solution=improvedSolution1;
+		 * // // m_solution=CW.getSolution(); // m_solution.evaluate(); //
+		 * m_solution.print(System.err); // // // Solution stupidSol=
+		 * stupidSolution(); // System.err.println(stupidSol); //
+		 * stupidSol.print(System.err); // // Solution
+		 * improvedSolution=orOpt(stupidSolution());
+		 * 
+		 * // Solution improvedSolution=twoOpt(stupidSolution()); // Solution
+		 * improvedSolution=localSearch(stupidSolution(),2); // Solution
+		 * improvedSolution=localSearch(CW.getSolution(),1);
+		 */
+		//System.out.println("Cheapest insertion vns");
+//		HCheapestInsertion cih=new HCheapestInsertion(m_instance);
+//		VariableNeighborhoodSolution VNS=new VariableNeighborhoodSolution(m_instance, cih.getSolution());
+//		m_solution = VNS.solveVNS();
+//		m_solution.print(System.err);
+		
+//		ClarkeWright cw=new ClarkeWright(m_instance);
+//		VariableNeighborhoodSolution VNS2=new VariableNeighborhoodSolution(m_instance, cw.getSolution());
+//		m_solution = VNS2.solveVNS();
+//		m_solution.print(System.err);
+		
+	
+//		Solution improvedSolution = twoOptSteepestDescent(stupidSolution());
+//		m_solution = improvedSolution;
+//		improvedSolution.print(System.err);
+
+		//Solution improvedSolution2 = localSearch(stupidSolution(), 3);
+//		Solution improvedSolution2=twoOpt(stupidSolution());
+//		m_solution = improvedSolution2;
+//		improvedSolution2.print(System.err);
+//		
+//		Solution improvedSolution=twoOptSteepestDescent(stupidSolution());
+//		m_solution = improvedSolution;
+//		improvedSolution.print(System.err);
+		
+		  //Solution VNSolution=variableNeighborhood(stupidSolution());
+		 // Solution VNSolution=variableNeighborhood(CW.getSolution());
+		  //m_solution=VNSolution;
+		 // VNSolution.print(System.err);
+		  
+		// HFarthestInsertion fih=new HFarthestInsertion(m_instance);
+		// fih.solve();
+		// Solution sfih=fih.getSolution();
+		// System.err.println("Farthest insertion");
+		// m_solution=sfih;
+		// sfih.print(System.err);
+		// m_instance.print(System.out);
+
+		//
+		// System.err.println("finished!!!");
+
+		// to see how to print solution
+		// m_solution.print(System.err);
+		// m_solution =stupidSolution();
+	}
+
+	/**
+	 * Variable neighborhood
+	 */
+	public Solution variableNeighborhood(Solution solution) throws Exception {
+
+		boolean improvement = true;
+		long obj1 = solution.getObjective();
+		Solution improvedSolution = solution.copy();
+
+		while (improvement) {
+
+			if ((obj1 - swap(improvedSolution).getObjective()) > 0) {
+				improvedSolution = localSearch(improvedSolution, 1); // swaping
+				obj1 = improvedSolution.getObjective();
+			} else if ((obj1 - twoOpt(improvedSolution).getObjective()) > 0) {
+				improvedSolution = localSearch(improvedSolution, 2); // using two opt
+				obj1 = improvedSolution.getObjective();
+			} else if ((obj1 - orOpt(improvedSolution).getObjective()) > 0) {
+				improvedSolution = localSearch(improvedSolution, 3); // using or-op
+				obj1 = improvedSolution.getObjective();
+			} else {
+				improvement = false;
+			}
+		}
+		return improvedSolution;
+	}
+
+	/**
+	 * Stupid heuristic that set vertex i at position i in the solution
+	 * 
+	 * @return
+	 */
+	public Solution nearestNeighboor(int startingNode) throws Exception {
+
+		Solution sol = new Solution(m_instance);
+
+		// check if the vertex is visited
+		boolean[] notVisited = new boolean[m_instance.getNbVertices()];
+		Arrays.fill(notVisited, true); // initialized true to reduce operations
+										// in the for loop
+
+		double max = m_instance.getMaxX() + m_instance.getMaxY(); // maximum
+																	// distance
+		double min = max; // min distance in a particular row, initialized with
+							// the max value,
+		double dist = 0; // holds de distance between two nodes temporarily
+		int idx = 0; // index of the min distance
+
+		// loop to insert other nodes
+		sol.setVertexPosition(startingNode, 0);
+		
+		notVisited[0] = false;
+
+		int idx2 = 0; // represents the current vertex positon
+		for (int i = 0; i < m_instance.getNbVertices() - 1; i++) { // position
+			for (int j = 1; j < m_instance.getNbVertices(); j++) { // nodes
+				// holds distance between current vertex and j vertex
+				dist = m_instance.getDistances(idx2, j); 
+				// evaluates the min distance from current node to j. if j is not visited
+				if (notVisited[j] && dist <= min) {
+					min = dist;
+					idx = j;
+				}
+			}
+			idx2 = idx; // current node
+			sol.setVertexPosition(idx, i + 1); // establish link for the tour
+			notVisited[idx] = false; // puts node as visited
+			min = max; // min always start comparison with the max possible value of the network
+		}
+		// connect last  node to initial node
+		sol.setVertexPosition(0, m_instance.getNbVertices());
+		sol.evaluate();
+		System.err.println("cost nearest neighborhood" + sol.getObjective());
+		// sol.print(System.err); //print solution
+		return sol;
+	}
+
+	// swap
+	public Solution swap(Solution solution) throws Exception {
+
+		Solution sol = solution.copy();
+
+		long opt1 = solution.getObjective();
+		long tempObj = 0;
+		long maxObj = solution.getObjective();
+
+		int besti = 0;
+		int bestj = 0;
+		int vertexj = 0;
+		boolean improvement = false;
+
+		for (int i = 1; i < m_instance.getNbVertices() - 1; i++) { // position 1
+			for (int j = i + 1; j < m_instance.getNbVertices(); j++) { // position
+																		// 2
+
+				if (j == i + 1) {
+
+					tempObj = opt1
+							- m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(i))
+							- m_instance.getDistances(sol.getSolution(j),sol.getSolution(j + 1))
+							+ m_instance.getDistances(sol.getSolution(i),sol.getSolution(j + 1))
+							+ m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(j));
+
+				} else {
+					tempObj = opt1
+							- m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(i))
+							- m_instance.getDistances(sol.getSolution(i),sol.getSolution(i + 1))
+							- m_instance.getDistances(sol.getSolution(j - 1),sol.getSolution(j))
+							- m_instance.getDistances(sol.getSolution(j),sol.getSolution(j + 1))
+							+ m_instance.getDistances(sol.getSolution(i),sol.getSolution(j + 1))
+							+ m_instance.getDistances(sol.getSolution(i),sol.getSolution(j - 1))
+							+ m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(j))
+							+ m_instance.getDistances(sol.getSolution(i + 1),sol.getSolution(j));
+				}
+
+				if (tempObj < maxObj) {
+					// System.err.println("improvement!" + " i " + i + " j " +j+" tempObj: "+ tempObj);
+					// record values
+					maxObj = tempObj;
+					besti = i;
+					bestj = j;
+					// sol2.print(System.err); //print
+					improvement = true;
+				} else {
+					// System.err.print("   don«t swap!");
+				}
+			}
+		}
+		if (improvement) {
+			// definitive swap
+			vertexj = solution.getSolution(bestj);
+			sol.setVertexPosition(solution.getSolution(besti), bestj);
+			sol.setVertexPosition(vertexj, besti);
+			sol.evaluate();
+		}
+
+		return sol;
+	}
+
+	public Solution twoOpt(Solution solution) throws Exception {
+
+		Solution sol = solution.copy();
+
+		long opt1 = solution.getObjective();
+		long tempObj = 0;
+		long maxObj = solution.getObjective();
+
+		int besti = 0;
+		int bestj = 0;
+
+		boolean improvement = false;
+
+		for (int i = 1; i < m_instance.getNbVertices() - 1; i++) { // vertex
+			for (int j = i + 1; j < m_instance.getNbVertices(); j++) { // vertex
+
+				tempObj = opt1
+						- m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(i))
+						- m_instance.getDistances(sol.getSolution(j),sol.getSolution(j + 1))
+						+ m_instance.getDistances(sol.getSolution(i),sol.getSolution(j + 1))
+						+ m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(j));
+				if (tempObj < maxObj) {
+					// System.err.println("improvement!" + " i " + i + " j " +
+					// j+" tempObj: "+ tempObj);
+					// record values
+					maxObj = tempObj;
+					besti = i;
+					bestj = j;
+					// sol2.print(System.err); //print
+					improvement = true;
+
+				} else {
+					// System.err.print("   don«t swap!");
+				}
+			}
+		}
+		if (improvement) {
+			// definitive swap
+			// System.out.println(besti + " " + bestj);
+			sol.reverse(besti, bestj);
+			sol.evaluate();
+		}
+		// System.err.println("finish 2opt");
+		// sol.print(System.err);
+		return sol;
+	}
+
+	public Solution localSearch(Solution solution, int move) throws Exception {
+
+		Solution S = solution.copy();
+		long Sobj = S.getObjective();
+
+		Solution S2 = solution.copy();
+		long Sobj2 = S.getObjective();
+
+		long diff = Long.MAX_VALUE;
+
+		int iter = 0;
+
+		while (diff > 0) {
+			if (move == 1) {
+				S2 = swap(S);
+			} else if (move == 2) {
+				S2 = twoOpt(S);
+			} else if (move == 3) {
+				S2 = orOpt(S);
+			} else {
+				diff = -1;
+			}
+			Sobj2 = S2.getObjective();
+			diff = Sobj - Sobj2;
+			iter++;
+			if (diff > 0) {
+				S = S2.copy();
+				Sobj = S.getObjective();
+			}
+		}
+		System.err.println("local search sol:" + Sobj + " movement:" + move
+				+ " iterations:" + iter);
+		// S.print(System.err);
+		return S;
+	}
+
+	public Solution stupidSolution() throws Exception {
+
+		Solution sol = new Solution(m_instance);
+
+		for (int j = 0; j < m_instance.getNbVertices(); j++) {
+			sol.setVertexPosition(j, j);
+		}
+		sol.setVertexPosition(0, m_instance.getNbVertices());
+
+		// check that i have a solution of the TSP
+		// sol.validate(); // useless b/o evaluate calculate it already
+		// evaluate
+		sol.evaluate();
+		// in order to print a solution, for intermediate cases
+		// sol.print(System.err);
+		System.err.println("CSS-- " + sol.getObjective());
+		return sol;
+	}
+
+	/**
+	 * @param solution
+	 * @return Solution after finding the best orOpt movement
+	 * @throws Exception
+	 */
+	public Solution orOpt(Solution solution) throws Exception {
+		Solution sol = solution.copy();
+
+		long opt1 = solution.getObjective();
+		long tempObj = 0;
+		long maxObj = solution.getObjective();
+
+		int besti = 0;
+		int bestj = 0;
+		int k = 3; // length of the sequence,
+		boolean improvement = false;
+
+		for (int i = 1; i < m_instance.getNbVertices() - k + 1; i++) { 
+			for (int j = 1; j < m_instance.getNbVertices() - k + 1; j++) { 
+
+				tempObj = Long.MAX_VALUE;
+
+				if (i != j) {
+
+					if (j > i) {
+						tempObj = opt1
+								- m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(i))
+								- m_instance.getDistances(sol.getSolution(i + k - 1),sol.getSolution(i + k))
+								- m_instance.getDistances(sol.getSolution(j + k - 1),sol.getSolution(j + k))
+								+ m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(i + k))
+								+ m_instance.getDistances(sol.getSolution(i),sol.getSolution(j + k - 1))
+								+ m_instance.getDistances(sol.getSolution(i + k - 1),sol.getSolution(j + k));
+					} else {
+						tempObj = opt1- m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(i))
+								- m_instance.getDistances(sol.getSolution(i + k - 1),sol.getSolution(i + k))
+								- m_instance.getDistances(sol.getSolution(j - 1),sol.getSolution(j))
+								+ m_instance.getDistances(sol.getSolution(j - 1),sol.getSolution(i))
+								+ m_instance.getDistances(sol.getSolution(i - 1),sol.getSolution(i + k))
+								+ m_instance.getDistances(sol.getSolution(j),sol.getSolution(i + k - 1));
+					}
+					// System.err.println("sequence " + i +" " + (i+1) +" "+
+					// (i+2) +"position "+ j + "distance:" + tempObj+
+					// " verif ");
+				}
+
+				if (tempObj < maxObj) {
+					// System.err.println("improvement!" + " i " + i + " j " +
+					// j+" tempObj: "+ tempObj);
+					// record values
+					maxObj = tempObj;
+					besti = i;
+					bestj = j;
+					// sol2.print(System.err); //print
+					improvement = true;
+				}
+			}
+		}
+		if (improvement) {
+			// definitive swap
+			// System.out.println(besti + " " + bestj);
+
+			if (besti < bestj) {
+				for (int i = besti + k; i < bestj + k; i++) {
+					sol.setVertexPosition(solution.getSolution(i), i - k);
+				}
+			} else {
+				for (int i = bestj; i < besti; i++) {
+					sol.setVertexPosition(solution.getSolution(i), i + k);
+				}
+			}
+
+			int h = bestj;
+			for (int i = besti; i < besti + k; i++) {
+				sol.setVertexPosition(solution.getSolution(i), h);
+				h++;
+			}
+
+		}
+		sol.evaluate();
+		// System.err.println(" or-opt");
+		// sol.print(System.err);
+		return sol;
+
+	}
+
+	public Solution twoOptSteepestDescent(Solution sol) throws Exception {
+		
+		boolean improvement = false;
+		double solObjectiveValue = sol.evaluate();
+		double bestObjectiveValue = sol.evaluate();
+		int bestPositionI = -1;
+		int bestPositionJ = -1;
+
+		// Test all possible 2opt for i and j
+		for (int i = 1; i < m_instance.getNbVertices(); ++i) {
+			for (int j = i + 1; j < m_instance.getNbVertices(); ++j) {
+				// Initialize two variables which indicate the value of the
+				// begin and the end of the chain
+				int tempVertexI = sol.getSolution(i);
+				int tempVertexJ = sol.getSolution(j);
+
+				// Computes the difference between the current solution's
+				// objective value and its neighbor's objective value
+				double neighborObjectiveValue = Integer.MAX_VALUE;
+
+				neighborObjectiveValue = solObjectiveValue
+						- m_instance.getDistances(sol.getSolution(i - 1),tempVertexI)
+						- m_instance.getDistances(tempVertexJ,sol.getSolution(j + 1))
+						+ m_instance.getDistances(sol.getSolution(i - 1),tempVertexJ)
+						+ m_instance.getDistances(tempVertexI,sol.getSolution(j + 1));
+
+				// Keep the best improvement
+				if (neighborObjectiveValue < bestObjectiveValue) {
+					improvement = true;
+					bestObjectiveValue = neighborObjectiveValue;
+					bestPositionI = i;
+					bestPositionJ = j;
+				}
+			}
+		}
+
+		// If an improvement was found, build effectively the best neighbor with
+		// the values of the best know solution
+		Solution bestNeighbor = sol.copy();
+		if (improvement) {
+			// Reverse the chain between i and j
+			bestNeighbor.reverse(bestPositionI, bestPositionJ);
+			bestNeighbor.evaluate();
+		}
+		// Return the solution created
+		return bestNeighbor;
+
+	}
+}

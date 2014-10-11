@@ -1,0 +1,235 @@
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Random;
+
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MoveAction;
+
+
+public class GRASP {
+	
+	Instance instance;
+	Solution solution;
+	Solution bestSolution;
+	localSearch ls;
+	VariableNeighborhoodSolution vns;
+	ArrayList<ArrayList<Integer>> list;
+	ArrayList<SortSolutions> parents;
+	ArrayList<Neighborhood> movements;
+	int length;
+	int iterations;
+	Random rand = new Random();
+	HCheapestInsertion HCI;
+	/**
+	 * Constructor
+	 * @param instance
+	 * @throws Exception
+	 */
+	public GRASP(Instance instance, int lenghtList, int iterations) throws Exception {
+		// TODO Auto-generated constructor stub
+		this.instance=instance;
+		solution=new Solution(instance);
+		bestSolution=new Solution(instance);
+		list=new ArrayList<ArrayList<Integer>>();
+		parents=new ArrayList<SortSolutions>();
+		this.ls=new localSearch();
+		this.length=lenghtList;
+		HCI=new HCheapestInsertion(instance);
+		this.iterations=iterations;
+		
+		movements = new ArrayList<Neighborhood>();
+	
+	}
+	
+	/**
+	 * @param iterations
+	 * @return best solution after applying GRASP
+	 * @throws Exception
+	 */
+	public Solution solve() throws Exception{
+		int k=3;
+		
+		//iterations
+		for (int i = 0; i < iterations; i++) {
+			
+			//fill the initial pool
+			int poolSize=4;
+			int j=0; //number of solutions in pool
+			int n=0; //Neighborhood
+			movements.add(new NSwap(instance, "swap"));		
+			while (j<poolSize) {
+				HRandomInsertion hri=new HRandomInsertion(instance);
+				bestSolution=hri.getSolution();
+				bestSolution= ls.localSearchV(bestSolution, instance, movements);
+				parents.add(new SortSolutions(bestSolution.getObjective(), bestSolution));
+				j++;
+			}						
+			
+			//sort parents by value
+			Collections.sort(parents);
+			System.out.println(parents);
+			//remove some bad solutions
+			poolSize=(int)poolSize/2;
+			for (int k = 0; k <  poolSize; k++) {
+				parents.remove(0);
+			}
+			
+			j=0; //number of solutions in pool
+			n++; //Neighborhood
+			movements.add(new NTwoOpt(instance, "2opt"));			
+			Iterator<SortSolutions> it = parents.iterator();
+			while (it.hasNext()) {
+				SortSolutions sort =  it.next();
+				bestSolution= ls.localSearchV(bestSolution, instance, movements);
+				parents.set(j,new SortSolutions(bestSolution.getObjective(), bestSolution));
+				j++;				
+			}
+
+			//sort parents by value
+			Collections.sort(parents);
+			System.out.println(parents);
+			n++;
+			j=parents.size();
+			movements.add(new NOrOpt(instance, "or-opt",k));	
+			bestSolution= ls.localSearchV(bestSolution, instance, movements);
+			bestSolution.print(System.err);
+			
+			//parents.add(new SortSolutions(bestSolution.getObjective(), bestSolution));
+	
+				
+//			if (bestSolution.getObjective()>solution.getObjective()) {
+//		
+//				bestSolution=solution;
+//				if(parents.size()<poolSize){
+//					parents.add(bestSolution);					
+//				}else{
+//					parents.remove(0);
+//					parents.add(bestSolution);
+//				}
+//				j++;
+//
+//			}else if (length<10) {
+//				length=length+2;
+//			}
+//			
+//			if (j%5 == 0) {
+//				n++;
+//				System.out.println("neighborhood" + n);
+//			}
+//
+//			if(n>2){
+//				n=0;
+//				System.out.println("again  >>>>" + n);
+//			}			
+//				
+		}			
+		return bestSolution;
+	}
+
+	/**
+	 * it Mutates the solution of a given tsp tour
+	 * @param solution2
+	 */
+	private void mutation(Solution solution2) {
+		// TODO Auto-generated method stub
+		int i=1+rand.nextInt(instance.getNbVertices()-1);
+		int j=1+rand.nextInt(instance.getNbVertices()-1);
+		solution.swap(i, j);
+	}
+	/**
+	 * 
+	 * @param parents2
+	 * @return offspring with half solution of father and half of mother
+	 * @throws Exception 
+	 */
+	private Solution crossover(ArrayList<Solution> parents) throws Exception {
+		
+		int cut1=1+rand.nextInt((int)instance.getNbVertices()/2);
+		int cut2=(int)instance.getNbVertices()/2+rand.nextInt((int)instance.getNbVertices()/2);
+		
+		Solution offspring=parents.get(1).copy();
+		int i=1,j=1; //count to cover all vertices
+		boolean inSolution=false;
+		while (i<instance.getNbVertices()) {
+			if (i>cut2 || i<cut1) {
+
+				//check if city is already in the tour inside cuts
+				inSolution=false;
+				for (int k = cut1; k <= cut2; k++) {
+					if (parents.get(0).getSolution(j)==offspring.getSolution(k)) {
+						inSolution=true;
+					}
+				}
+				//insert city of parent
+				if(!inSolution){
+					offspring.setVertexPosition(parents.get(0).getSolution(j), i);
+					i++;
+				}
+				j++;
+			}else{
+				i++;
+			}
+		}
+		//System.out.println(offspring.validate());
+		offspring.evaluate();
+		//offspring.print(System.out);
+		return offspring;
+	}
+
+	/**
+	 * Algorithm to construct a solution from scratch using cheapest insertion
+	 * to determine the list of candidates.
+	 * @throws Exception 
+	 */
+	private Solution greedyCheapest(int lengthlist) throws Exception{
+		return HCI.Cheapest(lengthlist);
+	}
+	
+	
+//	private Solution greedyRandomizedConstruction() throws Exception {
+//		// TODO Auto-generated method stub
+//		Solution Sol=new Solution(instance);
+//		Random rand = new Random();
+//
+//		int numberVertices=instance.getNbVertices();
+//		Sol.setVertexPosition(0, 0);
+//		Sol.setVertexPosition(0, numberVertices);
+//		int nodesConnected=2;// visit all positions of solution
+//		
+//		boolean[] candidates=new boolean[instance.getNbVertices()];
+//		
+//		while (nodesConnected<numberVertices) {
+//			
+//			//list=HCI.Cheapest(candidates, length,(numberVertices-nodesConnected));
+//			
+//			int randVertex=rand.nextInt(list.size());
+//			int vertex = list.get(randVertex).get(0);
+//			int position=list.get(randVertex).get(1);
+//			
+//			Sol.insertVertex(vertex, position, nodesConnected);
+//			candidates[vertex]=true;
+//			nodesConnected++;
+//		}		
+//		Sol.evaluate();
+//		//Sol.print(System.out);
+//		return Sol;
+//	}
+//	
+//
+//	/**
+//	 * initialize solution with stupid solution
+//	 * @return
+//	 * @throws Exception
+//	 */
+//	public void stupidSolution() throws Exception {
+//
+//		for (int j = 0; j < instance.getNbVertices(); j++) {
+//			bestSolution.setVertexPosition(j, j);
+//		}
+//		bestSolution.setVertexPosition(0, instance.getNbVertices());
+//		bestSolution.evaluate();
+//		
+//	}
+//	
+}

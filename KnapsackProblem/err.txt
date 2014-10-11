@@ -1,0 +1,7 @@
+Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at java.util.Arrays.sort(Arrays.java:1078)
+	at java.util.Collections.sort(Collections.java:115)
+	at LinearRelaxation.solveLinear(LinearRelaxation.java:54)
+	at BranchAndBound.solve(BranchAndBound.java:69)
+	at Solver.solve(Solver.java:91)
+	at Solver.main(Solver.java:28)

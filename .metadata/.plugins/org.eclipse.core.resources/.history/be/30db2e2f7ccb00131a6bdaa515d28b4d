@@ -1,0 +1,378 @@
+import java.lang.reflect.Array;
+import java.util.*;
+
+
+
+/**
+ * 
+ * This class is the place where you should enter your code and from which you can create your own objects.
+ * <br> 
+ * <br> The method you must implement is <code>solve()</code>. This method is called by the programmer 
+ * after loading the data. 
+ * <br>    
+ * <br> The <code>TSPSolver</code> object is created by the <code>Main</code> class.
+ * <br> The other objects that are created in <code>Main </code> can be accessed through the following 
+ * <code>TSPSolver</code> attributes: 
+ * 	<li><code>m_instance</code> the <code>Instance</code> object which contains the problem data.
+ * 	<li><code>m_solution</code> the <code>Solution</code> object to modify. This object will store the result of the program.
+ * 	<li><code>m_time</code> the maximum time limit (in seconds) given to the program.
+ *  <br><br>
+ * 
+ * @author Damien Prot, Fabien Lehuédé 2012
+ * 
+ */
+public class TSPSolver {
+
+  // --------------------------------------------
+  // --------------- ATTRIBUTES ------------------
+  // --------------------------------------------
+
+  /** The traveling salesman problem solution that will be returned by the program */
+	private Solution m_solution;
+
+  /** The TSP data.*/
+	private Instance m_instance;
+
+  /** Time given to solve the problem. */
+	private long m_time;
+
+	
+  // --------------------------------------------
+  // ------------ GETTERS AND SETTERS -----------
+  // --------------------------------------------
+
+  // These methods allow to access the class attributes from outside the class.
+
+  /** @return the problem solution */
+	public Solution getSolution() {
+		return m_solution;
+	}
+
+  /** @return problem data */
+	public Instance getInstance() {
+		return m_instance;
+	}
+
+  /** @return Time given to solve the problem */
+	public long getTime() {
+		return m_time;
+	}
+
+  /**
+   * Initializes the problem solution with a new Solution object (the old one will be deleted).
+   * 
+   * @param sol : new solution
+   */
+	public void setSolution(Solution sol) {
+		this.m_solution = sol;
+	}
+
+  /**
+   * Sets the problem data
+   * 
+   * @param inst
+   *          : the Instance object which contains the data.
+   */
+	public void setInstance(Instance inst) {
+		this.m_instance = inst;
+	}
+
+  /**
+   * Sets the time limit (in seconds).
+   * 
+   * @param time : time given to solve the problem
+   */
+	public void setTime(long time) {
+		this.m_time = time;
+	}
+
+	
+  // --------------------------------------
+  // -------------- METHODS ---------------
+  // --------------------------------------
+	
+  /**
+   * TODO Modify this method to solve the problem.
+   * 
+   * <br> Do not print text on the standard output (eg. using <code>System.out.print()</code> 
+   * or <code>System.out.println()</code>. This output is dedicated to the result analyzer
+   * that will be used to evaluate your code on multiple instances. 
+   * 
+   * <br> You can print using the error output (<code>System.err.print/println</code>).
+   *
+   * <br> When your algorithm terminates, make sure the attribute <code>m_solution</code>
+   * in this class points to the solution you want to return.
+   * 
+   * <br> You have to make sure that your algorithm does not take more time 
+   * than the time limit <code>m_time</code>.    
+   * 
+   * @throws Exception
+   *           May return some error, in particular if some vertices index are wrong. 
+   */
+	public void solve() throws Exception {
+		
+
+//		Solution nnSol=nearestNeighboor(0);
+//		m_solution=nnSol;
+//		nnSol.print(System.err);
+		
+//		HRandomInsertion rih=new HRandomInsertion(m_instance);
+//		rih.solve();
+//		Solution rihSol=rih.getSolution();
+//		System.err.println("Random insertion solution");
+//		m_solution=rihSol;
+//		rihSol.print(System.err);	
+		
+//		HCheapestInsertion cih=new HCheapestInsertion(m_instance);
+//		cih.solve();
+//		Solution cihSol=cih.getSolution();
+//		System.err.println("Random insertion solution");
+//		m_solution=cihSol;
+//		cihSol.print(System.err);
+		
+//		ClarkeWright h=new ClarkeWright(m_instance);
+//		h.solve();
+//		Solution sol=h.getSolution();
+//		sol.print(System.err);
+//		this.swap(sol);
+		
+
+		
+		Solution stupidSol= stupidSolution();
+		System.err.println(stupidSol);
+		stupidSol.print(System.err);
+		
+		Solution improvedSolution=swap(stupidSolution());
+		improvedSolution.print(System.err);
+		m_solution=improvedSolution;
+		
+		
+//		HFarthestInsertion fih=new HFarthestInsertion(m_instance);
+//		fih.solve();
+//		Solution sfih=fih.getSolution();
+//		System.err.println("Farthest insertion");
+//		m_solution=sfih;
+//		sfih.print(System.err);				
+
+
+//		
+//		System.err.println("finished!!!");
+		
+			
+		// to see how to print solution
+		//m_solution.print(System.err);
+		//m_solution =stupidSolution();
+	}
+	/**
+	 * Stupid heuristic that set vertex i at position i in the solution
+	 * @return
+	 */
+
+	public Solution nearestNeighboor(int startingNode) throws Exception{
+		
+		Solution sol=new Solution(m_instance);
+				
+		//check if the vertex is visited
+		boolean[] notVisited=new boolean[m_instance.getNbVertices()];
+		Arrays.fill(notVisited, true); // initialized true to reduce operations in the for loop
+
+		double max=m_instance.getMaxX()+m_instance.getMaxY();  // maximum distance 
+		double min=max; //min distance in a particular row, initialized with the max value,  
+		double dist=0;  //holds de distance between two nodes temporarily 
+		int idx=0; //index of the min distance
+		
+		//loop to insert other nodes
+		sol.setVertexPosition(startingNode, 0);
+		notVisited[0]=false;
+		
+		int idx2=0;  //represents the current vertex positon
+		for (int i = 0; i < m_instance.getNbVertices()-1; i++) {	 //position	
+		
+			for (int j = 1; j < m_instance.getNbVertices(); j++) {   // nodes 
+				
+				dist=m_instance.getDistances(idx2, j);  // holds distance between current vertex and j vertex
+				
+				// evaluates the min distance from current node to j. if j is not visited
+				if(notVisited[j]  && dist<=min){   
+					  min=dist;  
+					  idx=j;
+				}
+			}
+			idx2=idx; //current node
+			sol.setVertexPosition(idx,i+1);  //establish link for the tour	
+			notVisited[idx]=false;   // puts node as visited
+			min=max;  // min always start comparison with the max possible value of the network
+		}
+		
+		sol.setVertexPosition(0, m_instance.getNbVertices());//connect last node to initial node
+		sol.evaluate();
+		sol.print(System.err); //print solution
+		return sol;
+	}
+	
+/*	
+	public Solution swap(Solution solution) throws Exception{
+
+		Solution sol=solution.copy();
+		
+//		int p1=10;	
+//		int v1=solution.getSolution(p1);
+//		int p2=15;	
+//		int v2=solution.getSolution(p2);
+		
+		long opt1=solution.getObjective(); //objective function value
+		long opt2=opt1;
+		long maxObj=opt1;
+		
+		for (int i = 1; i < m_instance.getNbVertices(); i++) { //position 1
+			for (int j = i+1; j < m_instance.getNbVertices()-1; j++) { //position 2
+				
+//				sol.setVertexPosition(v1, p2);
+//				sol.setVertexPosition(v2, p1);
+//				
+//				int i=10;
+//				int j=15;		
+				
+				int vertex2=sol.getSolution(j);
+
+				sol.setVertexPosition(sol.getSolution(i), j);
+				sol.setVertexPosition(vertex2, i);
+				
+//				if (condition) {
+//					
+//				}
+				
+				opt2= opt1-
+						(m_instance.getDistances(sol.getSolution(i), sol.getSolution(j+1))
+						+m_instance.getDistances(sol.getSolution(i), sol.getSolution(j-1))
+						+m_instance.getDistances(sol.getSolution(i-1), sol.getSolution(j)) 
+						+m_instance.getDistances(sol.getSolution(i+1), sol.getSolution(j))
+						-m_instance.getDistances(sol.getSolution(i-1), sol.getSolution(i))
+						-m_instance.getDistances(sol.getSolution(i), sol.getSolution(i+1))
+						-m_instance.getDistances(sol.getSolution(j-1), sol.getSolution(j))
+						-m_instance.getDistances(sol.getSolution(j), sol.getSolution(j+1)));
+				
+				//System.out.println(opt2);
+				
+				//sol.getObjective();
+				//System.err.println(i + " with " + j+" " + opt2);
+				sol.print(System.err);
+				
+				if (opt2<maxObj) {
+					//System.err.println("improvement!");
+					maxObj=opt2;
+				}else{
+					//System.err.println("swap again!");
+					sol.setVertexPosition(sol.getSolution(j), i);
+					sol.setVertexPosition(vertex2, j);
+					//sol.print(System.err);
+				}
+			}
+		}
+		return sol;
+	}
+*/
+	public Solution swap(Solution sol) throws Exception
+	{
+		
+		boolean improvement = false;
+		double solObjectiveValue = sol.evaluate();
+		double bestKnownObjectiveValue = sol.evaluate();
+		int bestPositionI = -1;
+		int bestPositionJ = -1;
+		int bestVertexI = -1;
+		int bestVertexJ = -1;
+		
+		//Test all combinations of i and j
+		for(int i = 0; i < m_instance.getNbVertices() - 1; ++i)
+		{
+			for(int j = i+1; j < m_instance.getNbVertices(); ++j)
+			{
+				int tempVertexI = sol.getSolution(i);
+				int tempVertexJ = sol.getSolution(j);
+				System.out.println("Vertex i = "+tempVertexI+" at position "+i+" // Vertex j = "+tempVertexJ+" at position "+j);
+				
+				//Compute the difference in terms of length
+				double tempObjectiveValue = Integer.MAX_VALUE;
+				if(i == 0)
+				{
+					//i is the first vertices of the route (can't remove on the left)
+					if(j == i+1)
+					{
+						tempObjectiveValue = solObjectiveValue
+							- m_instance.getDistances(sol.getSolution(m_instance.getNbVertices()-1),tempVertexI)
+							- m_instance.getDistances(tempVertexJ, sol.getSolution(j+1))
+							+ m_instance.getDistances(tempVertexI,sol.getSolution(j+1))
+							+ m_instance.getDistances(sol.getSolution(m_instance.getNbVertices()-1),tempVertexJ)
+							;
+					}
+					else if(j == m_instance.getNbVertices()-1)
+					{
+						
+					}
+					else
+					{
+						
+					}
+				}
+				else if( j == i+1)
+				{
+									
+				}
+				else
+				{
+					
+				}
+				
+				//Keep the best improvement
+				if(tempObjectiveValue < bestKnownObjectiveValue)
+				{
+					bestKnownObjectiveValue = tempObjectiveValue;
+					improvement = true;
+					bestPositionI = j;
+					bestPositionJ = i;
+					bestVertexI = tempVertexI;
+					bestVertexJ = tempVertexJ;
+					System.out.println("bestPosition for vertex "+bestVertexI+" is "+bestPositionI);
+					System.out.println("bestPosition for vertex "+bestVertexJ+" is "+bestPositionJ);
+				}
+			}
+		}
+		
+		//Modify the solution with the best improvement
+		Solution solutionToReturn = sol.copy();
+		if(improvement)
+		{
+			solutionToReturn.setVertexPosition(bestVertexI, bestPositionI);
+			solutionToReturn.setVertexPosition(bestVertexJ, bestPositionJ);
+			if(bestPositionJ == 0)
+			{
+				solutionToReturn.setVertexPosition(bestVertexJ, m_instance.getNbVertices());
+			}
+			solutionToReturn.evaluate();
+		}
+		
+		return solutionToReturn;
+	}	
+	
+	
+	public Solution stupidSolution() throws Exception{
+		
+		Solution sol=new Solution(m_instance);
+		
+		for (int j = 0; j < m_instance.getNbVertices(); j++) {
+			sol.setVertexPosition(j, j);
+		}
+		sol.setVertexPosition(0, m_instance.getNbVertices());
+		
+		//check that i have a solution of the TSP
+		//sol.validate(); // useless b/o evaluate calculate it already
+		// evaluate 
+		sol.evaluate();
+		// in order to print a solution, for intermediate cases
+		//sol.print(System.err);
+	
+		return sol;
+	}
+}
+
